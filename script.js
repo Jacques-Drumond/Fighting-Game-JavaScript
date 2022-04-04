@@ -1,9 +1,15 @@
 const canvas = document.querySelector("canvas");
+
 const c = canvas.getContext("2d");
+
 canvas.width = 1024;
 canvas.height = 576;
+
 c.fillRect(0, 0, canvas.width, canvas.height);
+
 const gravity = 0.7;
+
+
 class Sprite {
   constructor({ position, velocity, color = "red", offset }) {
     this.position = position;
@@ -62,6 +68,8 @@ class Sprite {
   }
 }
 
+
+
 const player = new Sprite({
   position: {
     x: 0,
@@ -76,6 +84,8 @@ const player = new Sprite({
     y: 0,
   },
 });
+
+
 
 const enemy = new Sprite({
   position: {
@@ -95,7 +105,11 @@ const enemy = new Sprite({
 
 enemy.draw();
 
+
+
 console.log(player);
+
+
 
 const keys = {
   a: {
@@ -115,6 +129,10 @@ const keys = {
   },
 };
 
+
+
+
+
 function rectangularCollision({ renctangle1, rectangle2 }) {
   return (
     renctangle1.attackBox.position.x + renctangle1.attackBox.width >=
@@ -127,6 +145,28 @@ function rectangularCollision({ renctangle1, rectangle2 }) {
       rectangle2.position.y + rectangle2.height
   );
 }
+
+let timer = 5
+function decreaseTimer(){
+  if(timer > 0 ){  
+    setTimeout(decreaseTimer, 1000)
+    timer--
+    document.querySelector('#timer').innerHTML = timer
+  }
+
+  if(timer === 0){
+    if(player.health === enemy.health){
+      document.querySelector('#displayText').innerHTML = 'Tie'
+      document.querySelector('#displayText').style.display = 'flex'
+    } else if (player.health > enemy.health){
+      document.querySelector('#displayText').innerHTML = 'Player 1 Wins!'
+      document.querySelector('#displayText').style.display = 'flex'
+    }
+  } 
+}
+
+decreaseTimer()
+
 
 function animate() {
   window.requestAnimationFrame(animate);
@@ -178,7 +218,13 @@ function animate() {
   }}
 
 
+
+
+
 animate();
+
+
+
 
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
@@ -213,6 +259,9 @@ window.addEventListener("keydown", (event) => {
       break
   }
 });
+
+
+
 
 window.addEventListener("keyup", (event) => {
   // Player Keys
