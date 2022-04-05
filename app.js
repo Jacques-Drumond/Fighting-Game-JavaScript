@@ -1,29 +1,39 @@
 var mysql = require('mysql');
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv')
+
+dotenv.config({ path: './.env'})
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 var mysql = require('mysql');
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "loginnodejs"
+var db = mysql.createConnection({
+  database: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE
 });
 
-con.connect(function(err) {
+
+const publicDirectory = path.join(__dirname, './public')
+app.use( express.static( publicDirectory ));
+
+app.set('view engine', 'hbs')
+
+
+db.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Connected to database!");
 });
 
-// sendFile will go here
-app.use( express.static( __dirname + '/public' ));
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+
+app.get('/game', (req, res) =>{
+  res.render('index')
+})
+
 
 app.listen(port);
-console.log('Server started at http://localhost:' + port);
+console.log('Server started at port: ' + port);
