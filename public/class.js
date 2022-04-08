@@ -135,6 +135,13 @@ class Fighter extends Sprite {
           this.framesCurrent = 0;
         }
         break;
+      case "runReverse":
+        if (this.image !== this.sprites.runReverse.image) {
+          this.image = this.sprites.runReverse.image;
+          this.framesMax = this.sprites.runReverse.framesMax;
+          this.framesCurrent = 0;
+        }
+        break;
       case "jump":
         if (this.image !== this.sprites.jump.image) {
           this.image = this.sprites.jump.image;
